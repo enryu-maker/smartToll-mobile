@@ -5,6 +5,7 @@ import Login from '../screens/auth/Login';
 import Register from '../screens/auth/Register';
 import Start from '../screens/auth/Start';
 import Forgot from '../screens/auth/Forgot';
+import Otp from '../screens/auth/Otp';
 const Stack = createNativeStackNavigator()
 export default class AuthNav extends Component {
     render() {
@@ -22,6 +23,7 @@ export default class AuthNav extends Component {
                     <Stack.Screen name='Start' component={Start} />
                     <Stack.Screen name='Login' component={Login} />
                     <Stack.Screen name='Register' component={Register} />
+                    <Stack.Screen name='Otp' component={Otp} />
                     <Stack.Screen name='Forget' component={Forgot} />
                 </Stack.Navigator>
             </>

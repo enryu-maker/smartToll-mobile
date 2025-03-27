@@ -183,7 +183,7 @@ export const postVehicle = (data, setLoading) => {
                 topOffset: 50,
                 bottomOffset: 40,
             });
-            getVehicle(setLoading)
+            dispatch(getVehicle(setLoading))
             setLoading(false);
         } catch (error) {
             console.log(error);

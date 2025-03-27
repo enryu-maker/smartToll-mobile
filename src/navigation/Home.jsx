@@ -7,6 +7,7 @@ import { getVehicle } from '../../store/Actions/userActions';
 import { useDispatch } from 'react-redux';
 import Topup from '../screens/home/main/Topup';
 import Wallet from '../screens/home/main/Wallet';
+import Otp from '../screens/auth/Otp';
 const Stack = createNativeStackNavigator()
 export default class HomeNav extends Component {
 

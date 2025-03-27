@@ -21,36 +21,43 @@ export const Init = () => {
   };
 };
 
-export const UserRegister = (data, setLoading, navigation) => {
+export const UserRegister = (name, number, setLoading, navigation) => {
   return async dispatch => {
     setLoading(true);
     try {
       let response = await axios.post(`${baseURL}/v1/user/register/`,
-        data,
+        new URLSearchParams({
+          name: name,
+          phone_number: number,
+        }).toString(),
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
         }
       );
+
       console.log(response.data);
       Toast.show({
         type: 'success',
-        text1: response?.data?.msg || 'Registered successfully!',
+        text1: response?.data?.message || 'Registered successfully!',
         visibilityTime: 2000,
         autoHide: true,
         topOffset: 50,
         bottomOffset: 40,
       });
+
       setTimeout(() => {
-        navigation.navigate('Login');
+        navigation.navigate('Login', {
+          number: number,
+        });
         setLoading(false);
       }, 2000);
     } catch (error) {
       console.log(error?.response?.data);
       Toast.show({
         type: 'error',
-        text1: error?.response?.data?.msg || 'Registration failed!',
+        text1: error?.response?.data?.detail || 'Registration failed!',
         visibilityTime: 2000,
         autoHide: true,
         topOffset: 50,
@@ -120,64 +127,38 @@ export const UserLogin = (email, password, setLoading, navigation) => {
   };
 };
 
-export const sendCode = (email, setLoading, setCurrentStep) => {
+export const getOtp = (number, setLoading, navigation) => {
+  console.log(number)
   return async dispatch => {
     setLoading(true);
     try {
-      let response = await axios.post(baseURL + '/reset-password', {
-        "email": email,
-      },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      Toast.show({
-        type: 'success',
-        text1: response?.data?.msg,
-        visibilityTime: 2000,
-        autoHide: true,
-        topOffset: 50,
-        bottomOffset: 40,
-      });
-      setCurrentStep(2);
-      setLoading(false);
-    } catch (error) {
-      console.log(error?.response?.data);
-      Toast.show({
-        type: 'error',
-        text1: error?.response?.data?.msg,
-        visibilityTime: 2000,
-        autoHide: true,
-        topOffset: 50,
-        bottomOffset: 40,
-      });
-      setLoading(false);
-    }
-  };
-}
+      await axios.post(baseURL + '/v1/user/login/', {
+        phone_number: number,
+      }).then((response) => {
+        console.log(response)
+        Toast.show({
+          type: 'success',
+          text1: response?.data?.message,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 50,
+          bottomOffset: 40,
+        });
+        setTimeout(() => {
+          navigation.navigate('Otp', {
+            number: number,
+          });
+          setLoading(false);
+        }, 2000);
+      }).catch((error) => {
+        console.log(error)
+      })
 
-export const verifyCode = (token, setLoading, setCurrentStep) => {
-  return async dispatch => {
-    setLoading(true);
-    try {
-      let response = await axios.get(baseURL + `/reset-password/token-validation?token=${token}`);
-      Toast.show({
-        type: 'success',
-        text1: response?.data?.msg,
-        visibilityTime: 2000,
-        autoHide: true,
-        topOffset: 50,
-        bottomOffset: 40,
-      });
-      setCurrentStep(3);
-      setLoading(false);
     } catch (error) {
-      console.log(error?.response?.data);
+      console.log(error.response.data.message)
       Toast.show({
         type: 'error',
-        text1: error?.response?.data?.msg,
+        text1: error?.response?.data?.message,
         visibilityTime: 2000,
         autoHide: true,
         topOffset: 50,
@@ -186,7 +167,52 @@ export const verifyCode = (token, setLoading, setCurrentStep) => {
       setLoading(false);
     }
   };
-}
+};
+
+export const verifyOtp = (otp, number, setLoading, navigation) => {
+  return async dispatch => {
+    setLoading(true);
+    try {
+      await axios.post(baseURL + '/v1/user/verify/', {
+        phone_number: number,
+        otp: otp,
+      }).then((response) => {
+        Toast.show({
+          type: 'success',
+          text1: response?.data?.message,
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 50,
+          bottomOffset: 40,
+        });
+        console.log(response.data)
+        AsyncStorage.setItem('access', response?.data?.access_token);
+        dispatch({
+          type: 'SET_ACCESS',
+          payload: response?.data?.access_token,
+        });
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+      })
+        .catch((error) => {
+          console.log(error)
+          setLoading(false)
+        })
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: error?.response?.data?.message,
+        visibilityTime: 2000,
+        autoHide: true,
+        topOffset: 50,
+        bottomOffset: 40,
+      });
+      setLoading(false);
+    }
+  };
+};
 
 export const resetPassword = (password, token, setLoading) => {
   return async dispatch => {

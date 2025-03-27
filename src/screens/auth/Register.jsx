@@ -8,10 +8,8 @@ import { UserLogin, UserRegister } from '../../../store/Actions/AuthAction';
 export default function Register({ navigation }) {
     const dispatch = useDispatch();
     const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
     const [name, setName] = React.useState('');
     const [loading, setLoading] = React.useState(false);
-
 
     return (
         <ImageBackground
@@ -54,12 +52,12 @@ export default function Register({ navigation }) {
                 <View className='w-full px-4 bg-white h-[65%] self-end'>
                     {/* Email Input */}
                     <View className="mt-10">
-                        <Text className='text-black text-lg font-PSemiBold'>Email</Text>
+                        <Text className='text-black text-lg font-PSemiBold'>Phone Number</Text>
                         <TextInput
-                            placeholder='Enter your email'
+                            placeholder='Enter your phone number'
                             placeholderTextColor='#666'
                             className='border-b border-blue-500 w-full text-black text-base font-PRegular mt-2'
-                            keyboardType="email-address"
+                            keyboardType="number-pad"
                             autoCapitalize="none"
                             value={email}
                             onChangeText={(text) => setEmail(text)}
@@ -75,28 +73,12 @@ export default function Register({ navigation }) {
                             onChangeText={(text) => setName(text)}
                         />
                     </View>
-                    {/* Password Input */}
-                    <View className="mt-4">
-                        <Text className='text-black text-lg font-PSemiBold'>Password</Text>
-                        <TextInput
-                            placeholder='Enter your password'
-                            placeholderTextColor='#666'
-                            className='border-b border-blue-500 w-full text-black text-base font-PRegular mt-2'
-                            secureTextEntry
-                            value={password}
-                            onChangeText={(text) => setPassword(text)}
-                        />
-                    </View>
 
                     {/* Login Button */}
                     <TouchableOpacity
                         disabled={loading}
                         onPress={() => {
-                            const formData = new FormData();
-                            formData.append('email', email);
-                            formData.append('password', password);
-                            formData.append('name', name);
-                            dispatch(UserRegister(formData, setLoading, navigation))
+                            dispatch(UserRegister(name, email, setLoading, navigation));
                         }}
                         className='bg-blue-500 px-6 py-3 mt-6 rounded-md w-full'
                     >

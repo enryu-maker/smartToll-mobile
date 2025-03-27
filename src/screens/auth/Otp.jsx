@@ -3,11 +3,12 @@ import React from 'react';
 import { IMAGE } from '../../assets/image';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useDispatch } from 'react-redux';
-import { getOtp, UserLogin } from '../../../store/Actions/AuthAction';
+import { getOtp, UserLogin, verifyOtp } from '../../../store/Actions/AuthAction';
 
-export default function Login({ navigation }) {
+export default function Otp({ navigation, route }) {
+    const { number } = route.params;
     const dispatch = useDispatch();
-    const [email, setEmail] = React.useState('');
+    const [otp, setOtp] = React.useState('');
     const [loading, setLoading] = React.useState(false);
 
 
@@ -40,9 +41,9 @@ export default function Login({ navigation }) {
                         />
                     </TouchableOpacity>
                     <Text className='text-white text-4xl font-PBold'>
-                        Let's Sign You In{'\n'}
+                        Let's Verify You {'\n'}
                         <Text className='text-white text-2xl font-PRegular'>
-                            Login to continue!
+                            Enter OTP to continue!
                         </Text>
                     </Text>
                 </View>
@@ -52,15 +53,15 @@ export default function Login({ navigation }) {
                 <View className='w-full px-4 bg-white h-[65%] self-end'>
                     {/* Email Input */}
                     <View className="mt-10">
-                        <Text className='text-black text-lg font-PSemiBold'>Email</Text>
+                        <Text className='text-black text-lg font-PSemiBold'>OTP</Text>
                         <TextInput
-                            placeholder='Enter your phone number'
+                            placeholder='Enter your OTP'
                             placeholderTextColor='#666'
                             className='border-b border-blue-500 w-full text-black text-base font-PRegular mt-2'
                             keyboardType="number-pad"
                             autoCapitalize="none"
-                            value={email}
-                            onChangeText={(text) => setEmail(text)}
+                            value={otp}
+                            onChangeText={(text) => setOtp(text)}
                         />
                     </View>
 
@@ -68,7 +69,7 @@ export default function Login({ navigation }) {
                     <TouchableOpacity
                         disabled={loading}
                         onPress={() => {
-                            dispatch(getOtp(email, setLoading, navigation));
+                            dispatch(verifyOtp(otp, number, setLoading, navigation));
                         }}
                         className='bg-blue-500 px-6 py-3 mt-6 rounded-md w-full'
                     >
@@ -76,23 +77,8 @@ export default function Login({ navigation }) {
                             loading ?
                                 <ActivityIndicator className=' text-xl' size="small" color="#fff" />
                                 :
-                                <Text className='text-white font-PSemiBold text-xl text-center'>Send OTP</Text>
+                                <Text className='text-white font-PSemiBold text-xl text-center'>Login</Text>
                         }
-                    </TouchableOpacity>
-
-                    {/* make ------or-------- */}
-                    <View className='flex flex-row items-center justify-between mt-6'>
-                        <View className='w-1/3 border-b border-gray-400'></View>
-                        <Text className='text-gray-400 font-PBold text-xl mx-2'>or</Text>
-                        <View className='w-1/3 border-b border-gray-400'></View>
-                    </View>
-
-                    {/* Signup */}
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('Register')}
-                        className='bg-gray-200 px-6 py-3 mt-6 rounded-md w-full'
-                    >
-                        <Text className='text-black font-PSemiBold text-xl text-center'>Register</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>
