@@ -34,7 +34,7 @@ export default function Settings({
                     <View className="ml-4">
                         <Text className="text-black text-lg font-PSemiBold">{profile?.name}</Text>
                         <Text className="text-gray-500 text-base">
-                            {profile?.email}
+                            {profile?.phone_number}
                         </Text>
                     </View>
                 </View>

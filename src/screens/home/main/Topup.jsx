@@ -10,12 +10,12 @@ export default function Topup({
     const [amount, setAmount] = React.useState(0)
     const [loading, setLoading] = React.useState(false)
     const handleTopUp = () => {
-        if (amount <= 0 || isNaN(amount)) {
-            alert("Please enter a valid amount");
+        if (amount < 100 || isNaN(amount)) {
+            alert("Please enter a valid amount (minimum ₹100)");
             return;
         }
         dispatch(topupWallet(amount, setLoading, navigation));
-        dispatch(getUserWallet(setLoading))
+        dispatch(getUserWallet(setLoading));
     };
     return (
         <SafeAreaView className='flex-1 mt-5 bg-white'>
