@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { View, Text, StatusBar, TouchableOpacity, ScrollView, Image, Linking } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Header from '../../../components/Header';
@@ -6,7 +6,6 @@ import { IMAGE } from '../../../assets/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile, LogoutAction } from '../../../../store/Actions/AuthAction';
 import { getUserWallet } from '../../../../store/Actions/userActions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Settings({
     navigation
@@ -43,6 +42,12 @@ export default function Settings({
                     onPress={() => navigation.navigate('Wallet')}
                     className="p-4 border-b border-gray-300">
                     <Text className="text-black text-lg font-PSemiBold">Wallet</Text>
+                </TouchableOpacity>
+                {/* button to open phone app and call number */}
+                <TouchableOpacity
+                    onPress={() => Linking.openURL(`tel:${profile?.phone_number}`)}
+                    className="p-4 border-b border-gray-300 bg bg-red-500">
+                    <Text className="text-white text-lg font-PSemiBold">Emergency</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
