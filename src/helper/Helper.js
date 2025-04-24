@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 // export const baseURL = 'https://cng-be.vercel.app';
-export const baseURL = 'https://backend.gwsweb.co.in';
+export const baseURL = 'http://192.168.1.12:8000';
 
 export const DEEP_LINK_PREFIX = 'cng-be.vercel://';
 export const DEEP_LINK_WEB_VERSION = 'https://cng-be.vercel.app/app-redirect';

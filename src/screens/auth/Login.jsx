@@ -52,7 +52,7 @@ export default function Login({ navigation }) {
                 <View className='w-full px-4 bg-white h-[65%] self-end'>
                     {/* Email Input */}
                     <View className="mt-10">
-                        <Text className='text-black text-lg font-PSemiBold'>Email</Text>
+                        <Text className='text-black text-lg font-PSemiBold'>Phone Number</Text>
                         <TextInput
                             placeholder='Enter your phone number'
                             placeholderTextColor='#666'
